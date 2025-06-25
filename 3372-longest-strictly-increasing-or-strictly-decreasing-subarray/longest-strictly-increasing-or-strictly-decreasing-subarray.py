@@ -1,15 +1,16 @@
 class Solution:
     def longestMonotonicSubarray(self, nums: List[int]) -> int:
-        curLen = res = 1
+        inc = dec = 1
+        res = 1
 
         for i in range(1, len(nums)):
-            if (nums[i] == nums[i - 1] or
-                ((nums[i - curLen] < nums[i - curLen + 1]) != (nums[i - 1] < nums[i]))
-            ):
-                curLen = 1 if (nums[i] == nums[i - 1]) else 2
-                continue
+            if nums[i] == nums[i - 1]:
+                inc = dec = 1
+            elif nums[i] > nums[i - 1]:
+                inc, dec = inc + 1, 1
+            else:
+                inc, dec = 1, dec + 1
 
-            curLen += 1
-            res = max(res, curLen)
+            res = max(res, inc, dec)
 
         return res
